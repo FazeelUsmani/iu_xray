@@ -11,6 +11,13 @@ This project uses **images (X-ray/MRI)** and **radiology report text** to predic
  
 ---  
 
+## Architecture diagram
+
+![IU X-Ray Model Architecture](docs/images/Architecture.png)
+
+
+---
+
 ## Project Structure
 
 ```
