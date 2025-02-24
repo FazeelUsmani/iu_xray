@@ -15,6 +15,9 @@ This project uses **images (X-ray/MRI)** and **radiology report text** to predic
 
 ![IU X-Ray Model Architecture](docs/images/Architecture.png)
 
+## FLow chart
+
+![Flowchart](docs/images/flowchart.svg)
 
 ---
 
