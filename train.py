@@ -10,7 +10,7 @@ def train():
     ###################
     # 1. Dataset Setup (Training Data)
     ###################
-    csv_file = "train.csv"  # Use the training CSV
+    csv_file = "train.csv" 
     batch_size = 8
     num_workers = 2
 
@@ -51,10 +51,10 @@ def train():
         for i, (images, text_seq, labels) in enumerate(dataloader):
             images = images.to(device)
             text_seq = text_seq.to(device)
-            labels = labels.to(device).unsqueeze(1)  # shape (batch_size, 1)
+            labels = labels.to(device).unsqueeze(1) 
 
             optimizer.zero_grad()
-            logits = model(images, text_seq)  # (batch_size, 1)
+            logits = model(images, text_seq)  
             loss = criterion(logits, labels)
             loss.backward()
             optimizer.step()

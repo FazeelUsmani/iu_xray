@@ -14,7 +14,6 @@ class MultiModalClassifier(nn.Module):
         super(MultiModalClassifier, self).__init__()
         
         # 1) Image feature extractor using pre-trained ResNet-18
-        # self.cnn = models.resnet18(pretrained=True)
         self.cnn = models.resnet18(weights=ResNet18_Weights.IMAGENET1K_V1)
 
         # Remove the final classification layer to get raw feature vectors.
@@ -24,7 +23,6 @@ class MultiModalClassifier(nn.Module):
         
         # 2) Text encoder: Embedding layer + LSTM.
         self.embedding = nn.Embedding(num_embeddings=vocab_size, embedding_dim=embed_dim, padding_idx=0)
-        # batch_first=True makes input and output tensors shaped (batch, seq_len, features)
         self.lstm = nn.LSTM(input_size=embed_dim, hidden_size=hidden_dim, batch_first=True)
         self.text_feat_dim = hidden_dim
         
@@ -33,7 +31,6 @@ class MultiModalClassifier(nn.Module):
         self.fc1 = nn.Linear(self.img_feat_dim + self.text_feat_dim, 128)
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(128, num_classes)
-        # For binary classification, you can use BCEWithLogitsLoss which applies sigmoid internally.
     
     def forward(self, images, text_seq):
         """
