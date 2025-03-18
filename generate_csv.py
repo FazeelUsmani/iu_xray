@@ -25,6 +25,6 @@ for split in ["train", "test"]:
                     'split': split
                 })
     df = pd.DataFrame(rows)
-    csv_filename = f"{split}.csv"
+    csv_filename = f"data/{split}.csv"
     df.to_csv(csv_filename, index=False)
     print(f"{csv_filename} created with {len(df)} samples.")

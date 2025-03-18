@@ -10,7 +10,7 @@ def train():
     ###################
     # 1. Dataset Setup (Training Data)
     ###################
-    csv_file = "train.csv" 
+    csv_file = "data/train.csv" 
     batch_size = 8
     num_workers = 2
 

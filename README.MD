@@ -15,6 +15,16 @@ This project uses **images (X-ray/MRI)** and **radiology report text** to predic
 
 ![IU X-Ray Model Architecture](docs/images/Architecture.png)
 
+## Results
+
+![Confusion Matrix](results/confusion_matrix.png)
+
+![Precision Recall](results/precision_recall_curve.png)
+
+![text](results/evaluation_results.txt)
+
+
+
 ## FLow chart
 
 ![Flowchart](docs/images/flowchart.svg)

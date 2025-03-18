@@ -54,7 +54,7 @@ def test_model():
             # break  
             
     accuracy = correct / total if total > 0 else 0
-    print(f"Test Accuracy on first batch: {accuracy:.4f}")
+    print(f"Test Accuracy: {accuracy:.4f}")
 
 if __name__ == "__main__":
     test_model()
