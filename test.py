@@ -8,7 +8,7 @@ def test_model():
     with open("vocab.pkl", "rb") as f:
         saved_vocab = pickle.load(f)
 
-    test_csv = "test.csv"
+    test_csv = "data/test.csv"
     test_dataset = IUXrayDataset(test_csv, transform=None)
 
     test_dataset.word2idx = saved_vocab
@@ -22,7 +22,7 @@ def test_model():
         num_classes=1
     )
     # Load the saved model weights
-    model.load_state_dict(torch.load("trained_model.pth", map_location="cpu"))
+    model.load_state_dict(torch.load("models/trained_model.pth", map_location="cpu"))
     model.eval()
     
     test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)

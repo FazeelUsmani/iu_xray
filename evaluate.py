@@ -26,9 +26,10 @@ test_loader = DataLoader(test_dataset, batch_size=16, shuffle=False)
 # Initialize model
 model = MultiModalClassifier(
     vocab_size=test_dataset.vocab_size,
-    embed_dim=100,
-    hidden_dim=128,
-    num_classes=1
+    embed_dim=128,
+    hidden_dim=256,
+    num_classes=1,
+    dropout=0.3
 )
 
 # Load the trained model

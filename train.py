@@ -37,8 +37,15 @@ def train():
         dropout=0.3
     )
 
-    # Compute class weights to handle class imbalance
     df_train = pd.read_csv(csv_file)
+
+    # Automatically create labels if not present
+    if 'label' not in df_train.columns:
+        print("'label' column not found. Creating labels from 'report' column...")
+        df_train['label'] = df_train['report'].apply(lambda x: 1 if 'pneumonia' in x.lower() else 0)
+        df_train.to_csv(csv_file, index=False)
+        print("'label' column created and saved back to train.csv")
+
     class_weights = compute_class_weight(
         class_weight='balanced',
         classes=np.unique(df_train['label']),
