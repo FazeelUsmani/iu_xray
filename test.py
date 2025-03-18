@@ -17,9 +17,10 @@ def test_model():
     # Instantiate the model with the same parameters as training
     model = MultiModalClassifier(
         vocab_size=test_dataset.vocab_size,
-        embed_dim=100,
-        hidden_dim=128,
-        num_classes=1
+        embed_dim=128,
+        hidden_dim=256,
+        num_classes=1,
+        dropout=0.3
     )
     # Load the saved model weights
     model.load_state_dict(torch.load("models/trained_model.pth", map_location="cpu"))

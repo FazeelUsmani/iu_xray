@@ -48,7 +48,7 @@ class MultiModalClassifier(nn.Module):
 
 if __name__ == "__main__":
     vocab_size = 2075
-    model = MultiModalClassifier(vocab_size, embed_dim=128, hidden_dim=256, num_classes=1)
+    model = MultiModalClassifier(vocab_size, embed_dim=128, hidden_dim=256, num_classes=1, dropout=0.3)
 
     dummy_images = torch.randn(4, 3, 224, 224)
     dummy_text = torch.randint(1, vocab_size, (4, 50))
