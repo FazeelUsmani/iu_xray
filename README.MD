@@ -21,13 +21,13 @@ This project uses **images (X-ray/MRI)** and **radiology report text** to predic
 
 ![Precision Recall](results/precision_recall_curve.png)
 
-![text](results/evaluation_results.txt)
+[text](results/evaluation_results.txt)
 
 
 
-## FLow chart
+<!-- ## FLow chart
 
-![Flowchart](docs/images/flowchart.svg)
+![Flowchart](docs/images/flowchart.svg) -->
 
 ---
 
