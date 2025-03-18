@@ -21,7 +21,7 @@ This project uses **images (X-ray/MRI)** and **radiology report text** to predic
 
 ![Precision Recall](results/precision_recall_curve.png)
 
-[text](results/evaluation_results.txt)
+[Evaluation report](results/evaluation_results.txt)
 
 
 
@@ -107,7 +107,7 @@ Epoch [1/5], Loss: 0.4893
 Model saved to trained_model.pth
 ```
 
-### 3. Test/Evaluate the Model
+### 3. Test the Model
 
 Run:
 ```bash
@@ -133,9 +133,35 @@ What happens:
 **Output** example:
 
 ```
-Test Accuracy: 0.9593
+Test Accuracy: 0.9992
 ```
 
+
+### 4. Evaluate the model metrics
+* Generates confusion matrics, precision recall curve and evaluation results in results folder
+
+```
+python evaluate.py
+```
+
+Output:
+```
+Vocabulary loaded successfully.
+Accuracy: 0.9983
+Precision: 0.9600
+Recall: 1.0000
+F1 Score: 0.9796
+
+Classification Report:
+               precision    recall  f1-score   support
+
+         0.0       1.00      1.00      1.00      1132
+         1.0       0.96      1.00      0.98        48
+
+    accuracy                           1.00      1180
+   macro avg       0.98      1.00      0.99      1180
+weighted avg       1.00      1.00      1.00      1180
+```
 ---
   
 ## Model Architecture
