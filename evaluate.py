@@ -44,7 +44,7 @@ with torch.no_grad():
         outputs = model(images, texts)
 
         probs = torch.sigmoid(outputs).squeeze()
-        preds = (probs >= 0.5).long()
+        preds = (probs >= 0.3).long()
 
         all_labels.extend(labels.numpy())
         all_preds.extend(preds.cpu().numpy())

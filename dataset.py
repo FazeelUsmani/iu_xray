@@ -20,14 +20,28 @@ class IUXrayDataset(Dataset):
         :param transform: Optional torchvision transforms for image augmentation/preprocessing.
         """
         self.data = pd.read_csv(csv_file)
+
+        # Define augmentation transforms for minority class (label = 1)
+        self.augment = T.Compose([
+            T.RandomHorizontalFlip(),
+            T.RandomRotation(10),
+            T.Resize((224, 224)),
+            T.ToTensor()
+        ])
+
+        # Default transform for majority class
+        self.default_transform = T.Compose([
+            T.Resize((224, 224)),
+            T.ToTensor()
+        ])
+
         self.transform = transform
 
-        # Build a simple vocabulary from all words in the dataset
+        # Build vocabulary from all words in the dataset
         all_text = []
         for txt in self.data["report"].astype(str):
             all_text.extend(txt.lower().split())
         vocab = sorted(set(all_text))
-        # Reserve index 0 for padding; assign indices starting from 1
         self.word2idx = {word: i + 1 for i, word in enumerate(vocab)}
         self.word2idx["<PAD>"] = 0
         self.vocab_size = len(self.word2idx)
@@ -41,32 +55,26 @@ class IUXrayDataset(Dataset):
         report = str(row["report"])
         text_tokens = report.lower().split()
 
-        # Determine label: if a 'label' column exists, use it;
-        # otherwise, compute the label using the contains_pneumonia function.
         if "label" in self.data.columns:
             label = row["label"]
         else:
             label = contains_pneumonia(report)
 
-        # Load the image from disk and apply transforms
-        image = Image.open("images/" + img_path).convert("RGB")
-        if self.transform:
-            image = self.transform(image)
-        else:
-            # Default transform: resize to 224x224 and convert to tensor
-            image = T.Resize((224, 224))(image)
-            image = T.ToTensor()(image)
+        image = Image.open(os.path.join("images", img_path)).convert("RGB")
 
-        # Convert text to a list of token indices using the vocabulary
+        # Apply augmentation if positive label
+        if label == 1:
+            image = self.augment(image)
+        else:
+            image = self.default_transform(image)
+
         token_ids = [self.word2idx.get(word, 0) for word in text_tokens]
-        # Pad or truncate the token list to MAX_TEXT_LEN
         if len(token_ids) < MAX_TEXT_LEN:
             token_ids += [0] * (MAX_TEXT_LEN - len(token_ids))
         else:
             token_ids = token_ids[:MAX_TEXT_LEN]
-        text_tensor = torch.tensor(token_ids, dtype=torch.long)
 
-        # Convert the label to a tensor (float for BCEWithLogitsLoss)
+        text_tensor = torch.tensor(token_ids, dtype=torch.long)
         label_tensor = torch.tensor(label, dtype=torch.float)
 
         return image, text_tensor, label_tensor

@@ -5,6 +5,9 @@ from torch.utils.data import DataLoader
 from dataset import IUXrayDataset
 from multimodal import MultiModalClassifier
 import pickle
+import pandas as pd
+import numpy as np
+from sklearn.utils.class_weight import compute_class_weight
 
 def train():
     ###################
@@ -28,12 +31,23 @@ def train():
     ###################
     model = MultiModalClassifier(
         vocab_size=dataset.vocab_size,
-        embed_dim=100,
-        hidden_dim=128,
-        num_classes=1
+        embed_dim=128,
+        hidden_dim=256,
+        num_classes=1,
+        dropout=0.3
     )
 
-    criterion = nn.BCEWithLogitsLoss()
+    # Compute class weights to handle class imbalance
+    df_train = pd.read_csv(csv_file)
+    class_weights = compute_class_weight(
+        class_weight='balanced',
+        classes=np.unique(df_train['label']),
+        y=df_train['label']
+    )
+    weights_tensor = torch.tensor(class_weights, dtype=torch.float).to("cuda" if torch.cuda.is_available() else "cpu")
+
+    # Using class-weighted loss
+    criterion = nn.BCEWithLogitsLoss(pos_weight=weights_tensor[1])
     optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -42,7 +56,7 @@ def train():
     ###################
     # 3. Training Loop
     ###################
-    num_epochs = 5   # TODO: Fazeel Change it back to 5
+    num_epochs = 5
 
     for epoch in range(num_epochs):
         model.train()
@@ -67,7 +81,7 @@ def train():
         print(f"Epoch {epoch+1} completed. Avg Loss: {epoch_loss:.4f}")
 
     # Save the trained model after training completes
-    torch.save(model.state_dict(), "trained_model.pth")
+    torch.save(model.state_dict(), "models/trained_model.pth")
     print("Model saved to trained_model.pth")
 
 if __name__ == "__main__":
